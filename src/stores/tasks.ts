@@ -19,7 +19,7 @@ export const useTasksStore = defineStore("tasks", () => {
   ]);
 
   const addNewTask = (content: string) => {
-    if (content) {
+    if (content.trim()) {
       let task = {
         id: Date.now(),
         content: content,

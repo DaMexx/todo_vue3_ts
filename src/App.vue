@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TASK from "@/components/TASK.vue";
+import Task from "@/components/Task.vue";
 import { ref } from "vue";
 import { useTasksStore } from "@/stores/tasks";
 
@@ -30,7 +30,7 @@ const arr = useTasksStore().tasks
 
     <div>=======================================</div>
 
-    <TASK 
+    <Task 
       v-for="task in arr" 
       :key="task.id" 
       :task="task"
