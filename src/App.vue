@@ -29,15 +29,24 @@ const arr = useTasksStore().tasks
     </button>
 
     <div>=======================================</div>
+    <div class="tasks">
+      <Task
+          v-for="task of arr"
+          :key="task.id"
+          :task="task"
+      />
 
-    <Task 
-      v-for="task in arr" 
-      :key="task.id" 
-      :task="task"
-    />
+    </div>
 
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+.tasks{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: blueviolet;
+  padding: 40px 20px;
+}
 </style> 
