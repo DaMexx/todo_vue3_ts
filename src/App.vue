@@ -12,7 +12,7 @@ function addNewTask(text:string){
   newTask.value = ''
 }
 
-const arr = useTasksStore().tasks
+const tasks = useTasksStore().tasks
 
 </script>
 
@@ -31,13 +31,14 @@ const arr = useTasksStore().tasks
     <div>=======================================</div>
     <div class="tasks">
       <Task
-          v-for="task of arr"
+          v-for="task of tasks"
           :key="task.id"
           :task="task"
-      />
-
-    </div>
-
+          />
+        </div>
+        <!-- :id="task.id"
+        :content="task.content"
+        :status="task.status" -->
   </div>
 </template>
 

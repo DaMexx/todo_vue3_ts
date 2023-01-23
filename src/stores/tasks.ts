@@ -1,21 +1,10 @@
 import { ref, computed } from "vue";
 import type { Ref } from "vue";
 import { defineStore } from "pinia";
-
-type TASK = {
-  id: number;
-  status: boolean;
-  content: string;
-}
+import type { taskType } from "@/types/TodoTypes";
 
 export const useTasksStore = defineStore("tasks", () => {
-
-  const tasks: Ref<TASK[]> = ref([
-    {
-      id: 1,
-      content: "GOVNO",
-      status: false,
-    },
+  const tasks: Ref<taskType[]> = ref([
   ]);
 
   const addNewTask = (content: string) => {

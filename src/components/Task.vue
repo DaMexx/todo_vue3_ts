@@ -1,31 +1,45 @@
 <script setup lang="ts">
 import { useTasksStore } from "@/stores/tasks";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import type { Ref } from "vue";
+import type { taskType } from "@/types/TodoTypes";
 
 const tasksStore = useTasksStore()
 function deleteTask(id: number) {
   tasksStore.deleteTask(id);
 }
-// defineProps<{
-//   task: { content: string, id: number, status: boolean },
-// }>()
-const props = defineProps<{
-  task:
-  {
-    content: string,
-    id: number,
-    status: boolean
-  },
+let props = defineProps<{
+  task: Ref<taskType>
 }>()
-let isEditable = ref(false);
-const edit:Ref<null> = ref(null)
+
+
+// defineProps<{
+//   content: string,
+//   status: boolean,
+//   id: number
+// }>()
+const task = computed(()=>{
+  return props.task.value
+})
+
+console.log(task.value);
+
+// withDefaults(defineProps<{
+//    title?: string
+//    likes: number,
+//  }>(), {
+//      // here we have default values
+//      title: '---',
+//  })
+
+
+
+
+
+let isEditable: Ref<boolean> = ref(false);
 const editTask = () => isEditable.value = true
 const cancel = () => isEditable.value = false;
-// console.log('task', task);
 
-let taskContent: Ref<String> = ref(props.task.content)
-console.log('task', taskContent);
 
 </script>
 
@@ -34,7 +48,7 @@ console.log('task', taskContent);
     <input 
       type="checkbox" 
       name="status" 
-      :id:number="task.id" 
+      :id="task.id" 
       :checked="task.status"
       class="task__checkbox"
     >
@@ -48,15 +62,15 @@ console.log('task', taskContent);
       type="text"
       @blur="cancel"
       ref="edit"
-      v-model="taskContent"
        class="task__content--editable"
     >
-    <!-- <input type="text"> -->
     <button
         @click.prevent="deleteTask(task.id)"
         class="task__delete-button"
     >X</button>
-  </div>
+  </div> -->
+  <!-- <div>{{status}}</div>
+  <div>{{id}}</div>
 </template>
 
 <style lang="scss" scoped>
