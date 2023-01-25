@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useTasksStore } from "@/stores/tasks";
 import { ref, computed, nextTick } from "vue";
-import type { Ref } from "vue";
 import type { taskType } from "@/types/TodoTypes";
 
 interface Props {
@@ -26,15 +25,11 @@ function changeStatus(id: number){
   tasksStore.changeStatus(id)
 }
 
-function focusInput() {
-
-}
-
 const input = ref<null | {focus: ()=>null}>(null)
 
 let newContent = content
 
-let isEditable: Ref<boolean> = ref(false);
+let isEditable = ref<boolean> (false);
 
 const makeEdit = async () => {
   isEditable.value = true;
@@ -70,7 +65,9 @@ const makeEdit = async () => {
     <button
         @click.prevent="deleteTask(id)"
         class="task__delete-button"
-    >X</button>
+    >
+    X
+    </button>
   </li>
 </template>
 

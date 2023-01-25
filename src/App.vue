@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Task from "@/components/Task.vue";
+import FilterBar from "@/components/FilterBar.vue";
 import { ref } from "vue";
 import { useTasksStore } from "@/stores/tasks";
 
@@ -13,6 +14,7 @@ function addNewTask(text:string){
 }
 
 const tasks = useTasksStore().tasks
+const filters = useTasksStore().filters
 
 </script>
 
@@ -27,8 +29,11 @@ const tasks = useTasksStore().tasks
       @click="addNewTask(newTask)"
     >Ok
     </button>
-
+{{ filters }}
     <div>=======================================</div>
+    <FilterBar 
+    :filters="filters"
+    />
     <div class="tasks">
       <Task
           v-for="task of tasks"
@@ -36,9 +41,6 @@ const tasks = useTasksStore().tasks
           :task="task"
           />
         </div>
-        <!-- :id="task.id"
-        :content="task.content"
-        :status="task.status" -->
   </div>
 </template>
 
