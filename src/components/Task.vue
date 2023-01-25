@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { useTasksStore } from "@/stores/tasks";
-import { ref, computed } from "vue";
+import { ref, computed, nextTick } from "vue";
 import type { Ref } from "vue";
 import type { taskType } from "@/types/TodoTypes";
 
 interface Props {
   task: taskType
 }
-const props = defineProps<Props>()
-const tasksStore = useTasksStore()
+const props = defineProps<Props>();
+const tasksStore = useTasksStore();
 
 function deleteTask(id: number) {
   tasksStore.deleteTask(id);
@@ -26,15 +26,20 @@ function changeStatus(id: number){
   tasksStore.changeStatus(id)
 }
 
-const editContent = ref<null | {focus: ()=>null}>(null)
+function focusInput() {
+
+}
+
+const input = ref<null | {focus: ()=>null}>(null)
 
 let newContent = content
-  
+
 let isEditable: Ref<boolean> = ref(false);
 
-const showInputForEdit = () => {
-  isEditable.value = true; 
-  editContent.value?.focus()
+const makeEdit = async () => {
+  isEditable.value = true;
+  await nextTick()
+  input.value?.focus()
 }
 
 </script>
@@ -50,17 +55,17 @@ const showInputForEdit = () => {
     >
     <span
       v-if="!isEditable"
-      @dblclick.prevent="showInputForEdit"
+      @dblclick.prevent="makeEdit"
       class="task__content"
     >{{ task.content }}</span>
     <input 
-      v-else
+      v-show="isEditable"
       @blur="editTask(id, newContent)"
       @keydown.enter="editTask(id, newContent)"
       v-model="newContent"
+      ref="input"
       type="text"
       class="task__content--editable"
-      autofocus
     >
     <button
         @click.prevent="deleteTask(id)"
