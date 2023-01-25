@@ -6,6 +6,7 @@ import type { taskType } from "@/types/TodoTypes";
 export const useTasksStore = defineStore("tasks", () => {
   const tasks: Ref<taskType[]> = ref([
   ]);
+  const currentFilter: Ref<string> = ref('');
 
   const addNewTask = (content: string) => {
     if (content.trim()) {
@@ -23,5 +24,15 @@ export const useTasksStore = defineStore("tasks", () => {
     tasks.value.splice(taskIndex, 1);
   };
 
-  return { tasks, addNewTask, deleteTask };
+  const editTask = (id: number, content: string) => {
+    const taskIndex = tasks.value.findIndex((task) => task.id === id);
+    tasks.value[taskIndex].content = content
+  }
+
+  const changeStatus = (id: number) => {
+    const taskIndex = tasks.value.findIndex((task) => task.id === id);
+    tasks.value[taskIndex].status = !tasks.value[taskIndex].status
+  }
+
+  return { tasks, addNewTask, deleteTask, editTask, changeStatus };
 });

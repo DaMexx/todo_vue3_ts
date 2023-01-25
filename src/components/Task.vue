@@ -4,73 +4,69 @@ import { ref, computed } from "vue";
 import type { Ref } from "vue";
 import type { taskType } from "@/types/TodoTypes";
 
+interface Props {
+  task: taskType
+}
+const props = defineProps<Props>()
 const tasksStore = useTasksStore()
+
 function deleteTask(id: number) {
   tasksStore.deleteTask(id);
 }
-let props = defineProps<{
-  task: Ref<taskType>
-}>()
+const id = props.task.id
+const content = props.task.content
+const status = props.task.status
 
+function editTask(id: number, content: string){
+  tasksStore.editTask(id, content);
+  isEditable.value = false;
+}
 
-// defineProps<{
-//   content: string,
-//   status: boolean,
-//   id: number
-// }>()
-const task = computed(()=>{
-  return props.task.value
-})
+function changeStatus(id: number){
+  tasksStore.changeStatus(id)
+}
 
-console.log(task.value);
+const editContent = ref<null | {focus: ()=>null}>(null)
 
-// withDefaults(defineProps<{
-//    title?: string
-//    likes: number,
-//  }>(), {
-//      // here we have default values
-//      title: '---',
-//  })
-
-
-
-
-
+let newContent = content
+  
 let isEditable: Ref<boolean> = ref(false);
-const editTask = () => isEditable.value = true
-const cancel = () => isEditable.value = false;
 
+const showInputForEdit = () => {
+  isEditable.value = true; 
+  editContent.value?.focus()
+}
 
 </script>
 
 <template>
-  <div class="task">
+  <li class="task">
     <input 
       type="checkbox" 
       name="status" 
-      :id="task.id" 
-      :checked="task.status"
+      :checked="status"
       class="task__checkbox"
+      @click="changeStatus(id)"
     >
     <span
       v-if="!isEditable"
-      @dblclick="editTask"
+      @dblclick.prevent="showInputForEdit"
       class="task__content"
     >{{ task.content }}</span>
     <input 
-       v-else
+      v-else
+      @blur="editTask(id, newContent)"
+      @keydown.enter="editTask(id, newContent)"
+      v-model="newContent"
       type="text"
-      @blur="cancel"
-      ref="edit"
-       class="task__content--editable"
+      class="task__content--editable"
+      autofocus
     >
     <button
-        @click.prevent="deleteTask(task.id)"
+        @click.prevent="deleteTask(id)"
         class="task__delete-button"
     >X</button>
-  </div> -->
-  <!-- <div>{{status}}</div>
-  <div>{{id}}</div>
+  </li>
 </template>
 
 <style lang="scss" scoped>
