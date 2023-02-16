@@ -18,6 +18,8 @@ const content = props.task.content
 const status = props.task.status
 
 function editTask(id: number, content: string) {
+  console.log(123);
+  
   tasksStore.editTask(id, content);
   isEditable.value = false;
 }
@@ -57,9 +59,9 @@ const makeEdit = async () => {
     {{ task.content }}
     </span>
     <input 
-      v-show="isEditable" 
+      v-else
       @blur="editTask(id, newContent)" 
-      @keydown.enter="editTask(id, newContent)"
+      @keyup="editTask(id, newContent)"
       v-model="newContent" 
       ref="input" 
       type="text" 
