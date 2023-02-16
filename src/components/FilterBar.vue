@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useTasksStore } from "@/stores/tasks";
 
 interface Props {
   filters: string[]
