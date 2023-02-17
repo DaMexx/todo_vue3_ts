@@ -1,80 +1,131 @@
 <script setup lang="ts">
 import Task from "@/components/Task.vue";
 import FilterBar from "@/components/FilterBar.vue";
-import { ref, computed } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { useTasksStore } from "@/stores/tasks";
+import { storeToRefs } from 'pinia';
 
-const tasksStore = useTasksStore()
+const tasksStore = useTasksStore();
+const { deleteCompletedTasks, checkAllTasks } = tasksStore;
+const { getCurrentTasks, currentFilter, getCountOfCompletedTasks } = storeToRefs(tasksStore);
+
+const statuses = ref<boolean>(false);
 
 let newTask = ref<string>('');
-let selected = ref<string>('');
-// let isREd = ref<boolean>(false)
-function addNewTask(text:string){
+
+const showDeleteButton = computed<boolean>(() => getCountOfCompletedTasks.value === 0 ? true : false)
+
+onMounted(() => { })
+let activeTasksColor = computed<boolean>(() => currentFilter.value === 'active' ? true : false);
+let allTasksColor = computed<boolean>(() => currentFilter.value === 'all' ? true : false);
+let completedTasksColor = computed<boolean>(() => currentFilter.value === 'complete' ? true : false);
+
+
+function addNewTask(text: string) {
   tasksStore.addNewTask(text);
   newTask.value = ''
 }
-let currentColor = computed<string>(()=>{
-  return `${selected.value}` 
-})
-const tasks = useTasksStore().tasks
-const filters = useTasksStore().filters
 
 </script>
 
 <template>
-  <div id="app" :class="currentColor">
-    <input 
-      type="text" 
-      v-model="newTask" 
-      @keydown.enter="addNewTask(newTask)"
-    >
-    <button 
-      @click="addNewTask(newTask)"
-    >Ok
-    </button>
-{{ filters }}
-    <div>=======================================</div>
-    <FilterBar 
-    :filters="filters"
-    />
-    <div class="tasks">
-      <Task
-          v-for="task of tasks"
-          :key="task.id"
-          :task="task"
-          />
+  <div id="app">
+    <div class="header">
+      <h1 class="app__title">My Awesome Todo</h1>
+      <div class="app__input-container">
+        <input class="input-container__input" type="text" v-model="newTask" @keydown.enter="addNewTask(newTask)">
+        <button class="input-container__button" @click="addNewTask(newTask)" v-html="'Add'" />
+      </div>
+      <FilterBar />
+      <input type='checkbox' v-model="statuses" class="input-container__button" @click="checkAllTasks(value)" v-html="'CHECK'" />
+    </div>
+    <div class="hero">
+
+      
+      <button :disabled="showDeleteButton" @click.prevent="deleteCompletedTasks(statuses)">DELETE</button>
+      <div class="tasks" :class="{
+        red: activeTasksColor,
+        green: allTasksColor,
+        blue: completedTasksColor
+      }">
+        <Task v-for="task of getCurrentTasks" :key="task.id" :task="task" />
+      </div>
     </div>
 
-    <div>Selected: {{ selected }}</div>
-
-    <select v-model="selected">
-      <option disabled value="">Please select one</option>
-      <option>Red</option>
-      <option>Blue</option>
-      <option>Green</option>
-      <option>none</option>
-    </select>
   </div>
 </template>
 
 <style lang="scss" scoped>
-#app{
-  background: aqua;
+#app {
+  background: #20c997;;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 17px;
+  height: 100vh;
+  max-width: 1400px;
+  margin: 0 auto;
+  font-weight: normal;
 }
-.red{
-  background: red !important;
+
+.header {
+  background: #6f42c1;
 }
-.green{
-  background: green !important;
+
+.hero {
+  padding: 0 2em;
 }
-.blue{
-  background: green !important;
+
+.app__title {
+  text-align: center;
+  padding: 1em;
 }
-.tasks{
+
+.app__input-container {
+  display: flex;
+  padding: 1em;
+
+  justify-content: center;
+}
+
+
+.input-container {
+  &__input {
+    display: block;
+    width: 45%;
+  }
+
+  &__button {
+    display: block;
+    width: 5%;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.red {
+  background: red;
+}
+
+.green {
+  background: green;
+}
+
+.blue {
+  background: blue;
+}
+
+.tasks {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  background: blueviolet;
   padding: 40px 20px;
 }
 </style> 

@@ -55,13 +55,14 @@ const makeEdit = async () => {
       v-if="!isEditable" 
       @dblclick.prevent="makeEdit" 
       class="task__content"
+      :class="{crossed_out: props.task.status}"
     > 
     {{ task.content }}
     </span>
     <input 
       v-else
       @blur="editTask(id, newContent)" 
-      @keyup="editTask(id, newContent)"
+      @keyup.enter="isEditable = false"
       v-model="newContent" 
       ref="input" 
       type="text" 
@@ -102,5 +103,8 @@ const makeEdit = async () => {
   &__delete-button {
     margin: 10px 20px;
   }
+}
+.crossed_out{
+  text-decoration: line-through;
 }
 </style>
