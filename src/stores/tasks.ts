@@ -1,4 +1,4 @@
-import { ref, computed, reactive } from "vue";
+import { ref, computed, reactive, nextTick } from "vue";
 import { defineStore } from "pinia";
 import type { taskType, filterType } from "@/types/TodoTypes";
 
@@ -38,6 +38,10 @@ export const useTasksStore = defineStore("tasks", () => {
     }
   });
 
+  const tasksLength = computed<boolean>(() =>
+    tasks.value.length === 0 ? true : false
+  );
+
   const getCountOfActiveTasks = computed<number>(() => tasks.value.length);
   const getCountOfAllTasks = computed<number>(
     () => getActiveTasks.value.length
@@ -45,6 +49,13 @@ export const useTasksStore = defineStore("tasks", () => {
   const getCountOfCompletedTasks = computed<number>(
     () => getCompletedTasks.value.length
   );
+
+  const isAllTasksCompleted = computed<boolean>(() => {
+    if (tasks.value.length) {
+      return tasks.value.every((el) => el.status);
+    }
+    return false;
+  });
 
   const filters = ref<filterType[]>([
     { type: "all", count: getCountOfAllTasks as unknown as number },
@@ -90,14 +101,14 @@ export const useTasksStore = defineStore("tasks", () => {
     currentFilter.value = filter;
   };
 
-  const deleteCompletedTasks = (): void => {
+  const clearCompleted = (): void => {
     tasks.value = getActiveTasks.value;
     localStorage.setItem("tasks", JSON.stringify(tasks));
-
   };
 
-  const checkAllTasks = (status:boolean): void => {
-    tasks.value.forEach(el => el.status === status)
+  const checkAllTasks = (status: boolean) => {
+    tasks.value.forEach((el) => (el.status = status));
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   };
 
   return {
@@ -109,11 +120,13 @@ export const useTasksStore = defineStore("tasks", () => {
     editTask,
     changeStatus,
     toggleFilter,
-    deleteCompletedTasks,
+    clearCompleted,
     checkAllTasks,
     getCurrentTasks,
     getCountOfActiveTasks,
     getCountOfAllTasks,
     getCountOfCompletedTasks,
+    tasksLength,
+    isAllTasksCompleted,
   };
 });

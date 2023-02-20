@@ -15,7 +15,6 @@ function deleteTask(id: number) {
 
 const id = props.task.id
 const content = props.task.content
-const status = props.task.status
 
 function editTask(id: number, content: string) {
   console.log(123);
@@ -47,7 +46,7 @@ const makeEdit = async () => {
     <input 
       type="checkbox" 
       name="status" 
-      :checked="status" 
+      :checked="props.task.status" 
       class="task__checkbox" 
       @click="changeStatus(id)"
     >

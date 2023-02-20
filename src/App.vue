@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import Task from "@/components/Task.vue";
 import FilterBar from "@/components/FilterBar.vue";
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, watch, onMounted, nextTick } from "vue";
 import { useTasksStore } from "@/stores/tasks";
 import { storeToRefs } from 'pinia';
 
 const tasksStore = useTasksStore();
-const { deleteCompletedTasks, checkAllTasks } = tasksStore;
-const { getCurrentTasks, currentFilter, getCountOfCompletedTasks } = storeToRefs(tasksStore);
+const { clearCompleted, checkAllTasks } = tasksStore;
+const { getCurrentTasks, currentFilter, getCountOfCompletedTasks, isAllTasksCompleted } = storeToRefs(tasksStore);
+const input = ref<any>(null)
+const asd = ref<any>(null)
 
-const statuses = ref<boolean>(false);
+let statuses = ref<boolean>(false);
 
 let newTask = ref<string>('');
 
@@ -26,6 +28,15 @@ function addNewTask(text: string) {
   newTask.value = ''
 }
 
+async function checkAll() {
+  checkAllTasks(input.value.checked)
+  await nextTick()
+}
+
+onMounted(() => {
+  console.log('input', input);
+  console.log('isAllTasksCompleted', isAllTasksCompleted.value);
+})
 </script>
 
 <template>
@@ -37,12 +48,15 @@ function addNewTask(text: string) {
         <button class="input-container__button" @click="addNewTask(newTask)" v-html="'Add'" />
       </div>
       <FilterBar />
-      <input type='checkbox' v-model="statuses" class="input-container__button" @click="checkAllTasks(value)" v-html="'CHECK'" />
+      <!-- :disabled="tasksLength" -->
+      <input type='checkbox' v-model="isAllTasksCompleted" ref='input' class="input-container__button"
+        @change="checkAll" />
+      <span ref="asd">Check all tasks</span>
     </div>
     <div class="hero">
 
-      
-      <button :disabled="showDeleteButton" @click.prevent="deleteCompletedTasks(statuses)">DELETE</button>
+
+      <button :disabled="showDeleteButton" @click.prevent="clearCompleted()">DELETE</button>
       <div class="tasks" :class="{
         red: activeTasksColor,
         green: allTasksColor,
@@ -57,7 +71,8 @@ function addNewTask(text: string) {
 
 <style lang="scss" scoped>
 #app {
-  background: #20c997;;
+  background: #20c997;
+  ;
   font-family: Georgia, 'Times New Roman', Times, serif;
   font-size: 17px;
   height: 100vh;
