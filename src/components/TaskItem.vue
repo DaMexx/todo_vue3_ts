@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, nextTick, onUpdated, onBeforeMount } from "vue";
 import { useTasksStore } from "@/stores/tasks";
-import type { taskType } from "@/types"
+import type { taskType } from "@/types";
 
 interface Props {
-  task: taskType
+  task: taskType;
 }
 const props = defineProps<Props>();
 const tasksStore = useTasksStore();
@@ -13,8 +13,8 @@ function deleteTask(id: number) {
   tasksStore.deleteTask(id);
 }
 
-const id = props.task.id
-const content = props.task.content
+const id = props.task.id;
+const content = props.task.content;
 
 function editTask(id: number, content: string) {
   tasksStore.editTask(id, content);
@@ -22,31 +22,48 @@ function editTask(id: number, content: string) {
 }
 
 function changeStatus(id: number) {
-  tasksStore.changeStatus(id)
+  tasksStore.changeStatus(id);
 }
 
-const input = ref<null | { focus: () => null }>(null)
+const input = ref<null | { focus: () => null }>(null);
 
-let newContent = content
+let newContent = content;
 
 let isEditable = ref<boolean>(false);
 
 const makeEdit = async () => {
   isEditable.value = true;
-  await nextTick()
-  input.value?.focus()
-}
-
+  await nextTick();
+  input.value?.focus();
+};
 </script>
 
 <template>
   <li class="task">
-    <input type="checkbox" name="status" :checked="props.task.status" class="task__checkbox" @click="changeStatus(id)">
-    <span v-if="!isEditable" @dblclick.prevent="makeEdit" class="task__content" :class="{ crossed_out: props.task.status }">
+    <input
+      type="checkbox"
+      name="status"
+      :checked="props.task.status"
+      class="task__checkbox"
+      @click="changeStatus(id)"
+    />
+    <span
+      v-if="!isEditable"
+      @dblclick.prevent="makeEdit"
+      class="task__content"
+      :class="{ crossed_out: props.task.status }"
+    >
       {{ task.content }}
     </span>
-    <input v-else @blur="editTask(id, newContent)" @keyup.enter="isEditable = false" v-model="newContent" ref="input"
-      type="text" class="task__content--editable">
+    <input
+      v-else
+      @blur="editTask(id, newContent)"
+      @keyup.enter="isEditable = false"
+      v-model="newContent"
+      ref="input"
+      type="text"
+      class="task__content--editable"
+    />
     <button @click.prevent="deleteTask(id)" class="task__delete-button">
       X
     </button>

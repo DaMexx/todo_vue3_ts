@@ -35,7 +35,7 @@ const showDeleteButton = computed<boolean>(() =>
   getCountOfCompletedTasks.value === 0 ? true : false
 );
 
-onMounted(() => { });
+onMounted(() => {});
 let activeTasksColor = computed<boolean>(() =>
   currentFilter.value === "active" ? true : false
 );
@@ -69,24 +69,42 @@ onMounted(() => {
     <div class="header">
       <h1 class="app__title">My Awesome Todo</h1>
       <div class="app__input-container">
-        <input class="input-container__input" type="text" v-model.trim="newTask" @keydown.enter="addNewTask(newTask)" />
-        <button class="input-container__button" @click="addNewTask(newTask)" v-html="'Add'" />
+        <input
+          class="input-container__input"
+          type="text"
+          v-model.trim="newTask"
+          @keydown.enter="addNewTask(newTask)"
+        />
+        <button
+          class="input-container__button"
+          @click="addNewTask(newTask)"
+          v-html="'Add'"
+        />
       </div>
       <FilterBar />
 
-      <input type="checkbox" :disabled="tasksLength" v-model="isAllTasksCompleted" ref="input"
-        class="input-container__button" @change="checkAll" />
+      <input
+        type="checkbox"
+        :disabled="tasksLength"
+        v-model="isAllTasksCompleted"
+        ref="input"
+        class="input-container__button"
+        @change="checkAll"
+      />
       <span ref="asd">Check all tasks</span>
       <button :disabled="showDeleteButton" @click.prevent="clearCompleted()">
         DELETE
       </button>
     </div>
     <div class="hero">
-      <ul class="tasks" :class="{
-        red: activeTasksColor,
-        green: allTasksColor,
-        blue: completedTasksColor,
-      }">
+      <ul
+        class="tasks"
+        :class="{
+          red: activeTasksColor,
+          green: allTasksColor,
+          blue: completedTasksColor,
+        }"
+      >
         <Task v-for="task of getCurrentTasks" :key="task.id" :task="task" />
       </ul>
     </div>

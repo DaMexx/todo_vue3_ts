@@ -13,7 +13,7 @@ export const useTasksStore = defineStore("tasks", () => {
     if (content.trim()) {
       let task = {
         id: Date.now(),
-        content: content,
+        content,
         status: false,
       };
       tasks.value.push(task);
@@ -96,10 +96,10 @@ export const useTasksStore = defineStore("tasks", () => {
     tasks.value.forEach((el) => (el.status = status));
     localStorage.setItem("tasks", JSON.stringify(tasks));
   };
-const logAllData = ()=>{
-  console.log('tasks', tasks);
-  console.log('currentFilter', CURRENT_FILTER);
-}
+  const logAllData = () => {
+    console.log("tasks", tasks);
+    console.log("currentFilter", CURRENT_FILTER);
+  };
   return {
     tasks,
     currentFilter: CURRENT_FILTER,

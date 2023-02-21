@@ -3,7 +3,7 @@ export type taskType = {
   status: boolean;
   content: string;
 };
- export type filterType = {
+export type filterType = {
   type: string;
   count: number;
- }
+};
