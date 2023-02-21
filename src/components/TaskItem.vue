@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, nextTick } from "vue";
+import { ref, computed, nextTick, onUpdated, onBeforeMount } from "vue";
 import { useTasksStore } from "@/stores/tasks";
-import type { taskType } from "@/types/TodoTypes";
+import type { taskType } from "@/types"
 
 interface Props {
   task: taskType
@@ -17,8 +17,6 @@ const id = props.task.id
 const content = props.task.content
 
 function editTask(id: number, content: string) {
-  console.log(123);
-  
   tasksStore.editTask(id, content);
   isEditable.value = false;
 }
@@ -43,34 +41,13 @@ const makeEdit = async () => {
 
 <template>
   <li class="task">
-    <input 
-      type="checkbox" 
-      name="status" 
-      :checked="props.task.status" 
-      class="task__checkbox" 
-      @click="changeStatus(id)"
-    >
-    <span 
-      v-if="!isEditable" 
-      @dblclick.prevent="makeEdit" 
-      class="task__content"
-      :class="{crossed_out: props.task.status}"
-    > 
-    {{ task.content }}
+    <input type="checkbox" name="status" :checked="props.task.status" class="task__checkbox" @click="changeStatus(id)">
+    <span v-if="!isEditable" @dblclick.prevent="makeEdit" class="task__content" :class="{ crossed_out: props.task.status }">
+      {{ task.content }}
     </span>
-    <input 
-      v-else
-      @blur="editTask(id, newContent)" 
-      @keyup.enter="isEditable = false"
-      v-model="newContent" 
-      ref="input" 
-      type="text" 
-      class="task__content--editable"
-    >
-    <button 
-    @click.prevent="deleteTask(id)" 
-    class="task__delete-button"
-    >
+    <input v-else @blur="editTask(id, newContent)" @keyup.enter="isEditable = false" v-model="newContent" ref="input"
+      type="text" class="task__content--editable">
+    <button @click.prevent="deleteTask(id)" class="task__delete-button">
       X
     </button>
   </li>
@@ -103,7 +80,8 @@ const makeEdit = async () => {
     margin: 10px 20px;
   }
 }
-.crossed_out{
+
+.crossed_out {
   text-decoration: line-through;
 }
 </style>

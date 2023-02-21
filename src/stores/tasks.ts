@@ -1,12 +1,13 @@
 import { ref, computed, reactive, nextTick } from "vue";
 import { defineStore } from "pinia";
-import type { taskType, filterType } from "@/types/TodoTypes";
+import type { taskType, filterType } from "@/types";
 
 export const useTasksStore = defineStore("tasks", () => {
   const lS: taskType[] = JSON.parse(localStorage.tasks || "{}")._value;
 
-  const tasks = ref<taskType[]>(lS || []);
-  const currentFilter = ref<string>(localStorage.filter || "all");
+  let tasks = ref<taskType[]>(lS || []);
+
+  const CURRENT_FILTER = ref<string>(localStorage.filter || "all");
 
   const addNewTask = (content: string): void => {
     if (content.trim()) {
@@ -29,9 +30,9 @@ export const useTasksStore = defineStore("tasks", () => {
   });
 
   const getCurrentTasks = computed<taskType[]>(() => {
-    if (currentFilter.value === "all") {
+    if (CURRENT_FILTER.value === "all") {
       return tasks.value;
-    } else if (currentFilter.value === "active") {
+    } else if (CURRENT_FILTER.value === "active") {
       return getActiveTasks.value;
     } else {
       return getCompletedTasks.value;
@@ -57,7 +58,7 @@ export const useTasksStore = defineStore("tasks", () => {
     return false;
   });
 
-  const filters = ref<filterType[]>([
+  const filters = reactive<filterType[]>([
     { type: "all", count: getCountOfAllTasks as unknown as number },
     { type: "active", count: getCountOfActiveTasks as unknown as number },
     { type: "complete", count: getCountOfCompletedTasks as unknown as number },
@@ -81,24 +82,9 @@ export const useTasksStore = defineStore("tasks", () => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   };
 
-  // const activeFilter = reactive<filterType>({
-  //   type: "all",
-  //   count: getCountOfAllTasks.value,
-  // });
-  // const allFilter = reactive<filterType>({
-  //   type: "active",
-  //   count: getCountOfActiveTasks.value,
-  // });
-  // const completedFilter = reactive<filterType>({
-  //   type: "complete",
-  //   count: getCountOfCompletedTasks.value,
-  // });
-
-  // const filters = ref<filterType[]>([activeFilter, allFilter, completedFilter]);
-
   const toggleFilter = (filter: string): void => {
     localStorage.setItem("filter", filter);
-    currentFilter.value = filter;
+    CURRENT_FILTER.value = filter;
   };
 
   const clearCompleted = (): void => {
@@ -110,10 +96,13 @@ export const useTasksStore = defineStore("tasks", () => {
     tasks.value.forEach((el) => (el.status = status));
     localStorage.setItem("tasks", JSON.stringify(tasks));
   };
-
+const logAllData = ()=>{
+  console.log('tasks', tasks);
+  console.log('currentFilter', CURRENT_FILTER);
+}
   return {
     tasks,
-    currentFilter,
+    currentFilter: CURRENT_FILTER,
     filters,
     addNewTask,
     deleteTask,
@@ -122,6 +111,7 @@ export const useTasksStore = defineStore("tasks", () => {
     toggleFilter,
     clearCompleted,
     checkAllTasks,
+    logAllData,
     getCurrentTasks,
     getCountOfActiveTasks,
     getCountOfAllTasks,
