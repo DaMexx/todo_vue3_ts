@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { Task, FilterBar } from "@/components";
 import {
+  IconCommunity,
+  IconDocumentation,
+  IconEcosystem,
+  IconSupport,
+  IconTooling,
+} from "@/components/icons";
+import {
   ref,
   computed,
   watch,
@@ -23,10 +30,7 @@ const {
 } = storeToRefs(tasksStore);
 const input = ref<any>(null);
 const asd = ref<any>(null);
-const reactiveProp = reactive({
-  firstName: "asd" as string,
-  lastName: "zxc" as string,
-});
+
 let statuses = ref<boolean>(false);
 
 let newTask = ref<string>("");
@@ -39,9 +43,11 @@ onMounted(() => {});
 let activeTasksColor = computed<boolean>(() =>
   currentFilter.value === "active" ? true : false
 );
+
 let allTasksColor = computed<boolean>(() =>
   currentFilter.value === "all" ? true : false
 );
+
 let completedTasksColor = computed<boolean>(() =>
   currentFilter.value === "complete" ? true : false
 );
@@ -67,6 +73,12 @@ onMounted(() => {
 <template>
   <div id="app">
     <div class="header">
+      <IconCommunity />
+      <IconDocumentation />
+      <IconEcosystem />
+      <IconSupport />
+      <IconTooling />
+
       <h1 class="app__title">My Awesome Todo</h1>
       <div class="app__input-container">
         <input
