@@ -96,10 +96,7 @@ export const useTasksStore = defineStore("tasks", () => {
     tasks.value.forEach((el) => (el.status = status));
     localStorage.setItem("tasks", JSON.stringify(tasks));
   };
-  const logAllData = () => {
-    console.log("tasks", tasks);
-    console.log("currentFilter", CURRENT_FILTER);
-  };
+
   return {
     tasks,
     currentFilter: CURRENT_FILTER,
@@ -111,7 +108,6 @@ export const useTasksStore = defineStore("tasks", () => {
     toggleFilter,
     clearCompleted,
     checkAllTasks,
-    logAllData,
     getCurrentTasks,
     getCountOfActiveTasks,
     getCountOfAllTasks,

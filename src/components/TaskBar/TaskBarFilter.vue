@@ -27,20 +27,20 @@ const formatString = (text: string) => {
 </template>
 
 <style lang="scss" scoped>
-.filters {
-  display: flex;
-  justify-content: center;
-  gap: 2px;
+// .filters {
+//   display: flex;
+//   justify-content: center;
+//   gap: 2px;
 
-  &__item {
-    border: none;
+//   &__item {
+//     border: none;
 
-    &:hover {
-      background: blue;
-    }
-    &--active {
-      background: red;
-    }
-  }
-}
+//     &:hover {
+//       background: blue;
+//     }
+//     &--active {
+//       background: red;
+//     }
+//   }
+// }
 </style>

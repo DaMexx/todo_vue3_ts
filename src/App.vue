@@ -1,11 +1,18 @@
 <script setup lang="ts">
+//components
 import { Task, FilterBar } from "@/components";
+import Header from '@/components/Header/index.vue'
+import TaskBar from "./components/TaskBar/index.vue";
+//vue
 import { ref, computed, onMounted, nextTick } from "vue";
+//store
 import { useTasksStore } from "@/stores/tasks";
 import { storeToRefs } from "pinia";
 
+//referense
+//https://todomvc.com/examples/vanillajs/#/
 const tasksStore = useTasksStore();
-const { clearCompleted, checkAllTasks, logAllData } = tasksStore;
+const { clearCompleted, checkAllTasks } = tasksStore;
 const {
   getCurrentTasks,
   currentFilter,
@@ -13,18 +20,14 @@ const {
   isAllTasksCompleted,
   tasksLength,
 } = storeToRefs(tasksStore);
+
 const input = ref<any>(null);
 const asd = ref<any>(null);
-
-let statuses = ref<boolean>(false);
-
-let newTask = ref<string>("");
 
 const showDeleteButton = computed<boolean>(() =>
   getCountOfCompletedTasks.value === 0 ? true : false
 );
 
-onMounted(() => {});
 let activeTasksColor = computed<boolean>(() =>
   currentFilter.value === "active" ? true : false
 );
@@ -37,44 +40,22 @@ let completedTasksColor = computed<boolean>(() =>
   currentFilter.value === "complete" ? true : false
 );
 
-const addNewTask = (text: string) => {
-  tasksStore.addNewTask(text);
-  newTask.value = "";
-};
 const checkAll = async () => {
   checkAllTasks(input.value.checked);
   await nextTick();
 };
 
-onMounted(() => {
-  // console.log("input", input);
-  // console.log("isAllTasksCompleted", isAllTasksCompleted.value);
-  // console.log("reactiveProp", reactiveProp);
-  // console.log("reactiveProp-name", reactiveProp.firstName);
-  logAllData();
-});
 </script>
 
 <template>
   <div id="app">
+    <Header />
+    <div>
+      <h1 class="todo__title">My Awesome Todo</h1>
+      <TaskBar />
+    </div>
 
-    <div class="header">
-      <h1 class="app__title">My Awesome Todo</h1>
-      <div class="app__input-container">
-        <input
-          class="input-container__input"
-          type="text"
-          v-model.trim="newTask"
-          @keydown.enter="addNewTask(newTask)"
-        />
-        <button
-          class="input-container__button"
-          @click="addNewTask(newTask)"
-          v-html="'Add'"
-        />
-      </div>
-      <FilterBar />
-
+<!--       
       <input
         type="checkbox"
         :disabled="tasksLength"
@@ -97,9 +78,8 @@ onMounted(() => {
           blue: completedTasksColor,
         }"
       >
-        <Task v-for="task of getCurrentTasks" :key="task.id" :task="task" />
-      </ul>
-    </div>
+    
+      </ul> -->
   </div>
 </template>
 

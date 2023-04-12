@@ -71,34 +71,34 @@ const makeEdit = async () => {
 </template>
 
 <style lang="scss" scoped>
-.task {
-  display: flex;
-  max-width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  background: aquamarine;
-  border-radius: 30px;
+// .task {
+//   display: flex;
+//   max-width: 100%;
+//   justify-content: space-between;
+//   align-items: center;
+//   background: aquamarine;
+//   border-radius: 30px;
 
-  &__checkbox {
-    margin: 10px 20px;
-  }
+//   &__checkbox {
+//     margin: 10px 20px;
+//   }
 
-  &__content {
-    display: block;
-    width: 100%;
+//   &__content {
+//     display: block;
+//     width: 100%;
 
-    &--editable {
-      width: 100%;
-      text-decoration: none;
-    }
-  }
+//     &--editable {
+//       width: 100%;
+//       text-decoration: none;
+//     }
+//   }
 
-  &__delete-button {
-    margin: 10px 20px;
-  }
-}
+//   &__delete-button {
+//     margin: 10px 20px;
+//   }
+// }
 
-.crossed_out {
-  text-decoration: line-through;
-}
+// .crossed_out {
+//   text-decoration: line-through;
+// }
 </style>
