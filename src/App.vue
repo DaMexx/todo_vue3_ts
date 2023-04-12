@@ -1,21 +1,6 @@
 <script setup lang="ts">
 import { Task, FilterBar } from "@/components";
-import {
-  IconCommunity,
-  IconDocumentation,
-  IconEcosystem,
-  IconSupport,
-  IconTooling,
-} from "@/components/icons";
-import {
-  ref,
-  computed,
-  watch,
-  onMounted,
-  nextTick,
-  reactive,
-  onUpdated,
-} from "vue";
+import { ref, computed, onMounted, nextTick } from "vue";
 import { useTasksStore } from "@/stores/tasks";
 import { storeToRefs } from "pinia";
 
@@ -72,13 +57,8 @@ onMounted(() => {
 
 <template>
   <div id="app">
-    <div class="header">
-      <IconCommunity />
-      <IconDocumentation />
-      <IconEcosystem />
-      <IconSupport />
-      <IconTooling />
 
+    <div class="header">
       <h1 class="app__title">My Awesome Todo</h1>
       <div class="app__input-container">
         <input
@@ -124,62 +104,5 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-#app {
-  background: #20c997;
-  font-family: Georgia, "Times New Roman", Times, serif;
-  font-size: 17px;
-  height: 100vh;
-  max-width: 1400px;
-  margin: 0 auto;
-  font-weight: normal;
-}
 
-.header {
-  background: #6f42c1;
-}
-
-.hero {
-  padding: 1em 2em;
-  height: 100%;
-}
-
-.app__title {
-  text-align: center;
-  padding: 1em;
-}
-
-.app__input-container {
-  display: flex;
-  padding: 1em;
-
-  justify-content: center;
-}
-
-.input-container {
-  &__input {
-    display: block;
-    width: 45%;
-  }
-
-  &__button {
-    display: block;
-    width: 5%;
-  }
-}
-
-.red {
-  background: red;
-}
-
-.green {
-  background: green;
-}
-
-.blue {
-  background: blue;
-}
-
-.tasks {
-  padding: 40px 20px;
-}
 </style>

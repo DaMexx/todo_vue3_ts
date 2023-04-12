@@ -1,2 +1,2 @@
-export { default as Task } from "./TaskItem.vue";
-export { default as FilterBar } from "./FilterBar.vue";
+export { default as Task } from "./TaskBar/TaskBarItem.vue";
+export { default as FilterBar } from "./TaskBar/TaskBarFilter.vue";

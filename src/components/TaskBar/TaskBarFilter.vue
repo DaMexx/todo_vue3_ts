@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTasksStore } from "@/stores/tasks";
 import { storeToRefs } from "pinia";
-import type { filterType } from "@/types";
+import type { filterType } from "@/types/index.js";
 const taskStore = useTasksStore();
 
 const { toggleFilter } = taskStore;

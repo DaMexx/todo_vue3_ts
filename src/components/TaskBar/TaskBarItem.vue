@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, nextTick, onUpdated, onBeforeMount } from "vue";
 import { useTasksStore } from "@/stores/tasks";
-import type { taskType } from "@/types";
+import type { taskType } from "@/types/index.js";
 
 interface Props {
   task: taskType;
